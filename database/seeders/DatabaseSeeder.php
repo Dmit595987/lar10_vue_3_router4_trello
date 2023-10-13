@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-//        Desk::factory(100)->create();
-//        ListDesk::factory(100)->create();
+//       Desk::factory(100)->create();
+        ListDesk::factory(100)->create();
     }
 }

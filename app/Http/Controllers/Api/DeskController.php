@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\DeskStoreRequest;
 use App\Http\Requests\Api\DeskUpdateRequest;
 use App\Http\Resources\DeskResource;
 use App\Models\Desk;
@@ -15,16 +16,18 @@ class DeskController extends Controller
      */
     public function index()
     {
-        $desks = Desk::all();
+        $desks = Desk::orderBy('created_at', 'desc')->get();
         return DeskResource::collection($desks);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DeskStoreRequest $request)
     {
-        //
+        $data = $request->validated();
+        Desk::create($data);
+        return response([], 200);
     }
 
     /**
@@ -49,8 +52,9 @@ class DeskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete(Desk $desk)
     {
-        //
+        $desk->delete();
+        return response([], 200);
     }
 }

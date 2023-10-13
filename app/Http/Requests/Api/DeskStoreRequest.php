@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeskUpdateRequest extends FormRequest
+class DeskStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,16 @@ class DeskUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255|unique:desks,name'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'обязательное поле',
+            'name.string' => 'должно быть строкой',
+            'name.unique' => 'Такое значение уже есть, создайте уникальное'
         ];
     }
 }
