@@ -27,3 +27,5 @@ Route::patch('/desks/{desk}', [DeskController::class, 'update']);
 Route::delete('/desks/{desk}', [DeskController::class, 'delete']);
 
 Route::get('/list_desks', [ListDeskController::class, 'index']);
+Route::post('/list_desks', [ListDeskController::class, 'store']);
+Route::delete('/list_desks/{list_Desk}', [ListDeskController::class, 'delete']);

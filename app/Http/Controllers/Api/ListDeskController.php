@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ListDeskStoreRequest;
 use App\Http\Resources\ListDeskResource;
 use App\Models\ListDesk;
+
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 
 class ListDeskController extends Controller
 {
@@ -27,9 +31,11 @@ class ListDeskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ListDeskStoreRequest $request)
     {
-        //
+        $data = $request->validated();
+        ListDesk::create($data);
+        return response([], 200);
     }
 
     /**
@@ -51,8 +57,9 @@ class ListDeskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete(ListDesk $list_Desk)
     {
-        //
+        $list_Desk->delete();
+        return response([], 200);
     }
 }

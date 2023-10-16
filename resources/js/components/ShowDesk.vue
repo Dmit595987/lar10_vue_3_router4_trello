@@ -18,29 +18,41 @@
             </div>
 
             <div class="mt-3">
-                <a @click.prevent="deleteDesk(id)" href="#" class="btn btn-outline-warning">Delete</a>
+                <a @click.prevent="deleteDesk(id)" href="#" class="btn btn-outline-warning">Delete Desk</a>
             </div>
 
 
-                <table class="table table-primary mt-3">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                    </tr>
-                    </thead>
-                    <tbody v-for="list_desk in list_desks">
-                    <tr>
-                        <td>{{ list_desk.name }}</td>
-                        <td>{{ list_desk.desk_id }}</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <table class="table table-primary mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">Name List</th>
+                    <th scope="col">ID Desk</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody v-for="list_desk in list_desks">
+                <tr>
+                    <td>{{ list_desk.name }}</td>
+                    <td>{{ list_desk.desk_id }}</td>
+                    <td><a href="#" @click.prevent="delete_list_desk(list_desk.id)" class="btn btn-outline-danger">Delete List</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <h1>ADD LIST DESK</h1>
+        <div class="form-control">
+            <input type="text" @keyup="v$.name_list.$touch()" v-model="name_list" placeholder="add List"
+                   class="form-control"
+                   :class="{ 'is-invalid' : v$.name_list.$error }">
+            <div>
+                <p v-for="error of v$.$errors" :key="error.$uid">
+                    {{ error.$message }}
+                </p>
+            </div>
 
-
+            <a href="#" @click.prevent="add_name_list" class="btn btn-outline-success mt-3">Add List</a>
 
         </div>
-
 
 
     </div>
@@ -67,6 +79,8 @@ export default defineComponent({
             loading: true,
             errored: false,
             list_desks: null,
+            name_list: null,
+
         }
     },
 
@@ -83,6 +97,11 @@ export default defineComponent({
                 minLength: helpers.withMessage('Минимум 10 символов!', minLength(10)),
                 maxLength: helpers.withMessage('Максимум 25 символов!', maxLength(25))
             },
+            name_list: {
+                // required: helpers.withMessage('Обязательное поле!', required),
+                minLength: helpers.withMessage('Минимум 10 символов!', minLength(10)),
+                maxLength: helpers.withMessage('Максимум 25 символов!', maxLength(25))
+            }
         }
     },
 
@@ -130,7 +149,7 @@ export default defineComponent({
             }
         },
 
-        getDeskLists(){
+        getDeskLists() {
             axios.get(`/api/list_desks`, {params: {desk_id: this.id}})
                 .then(res => {
                     this.list_desks = res.data.data
@@ -138,7 +157,31 @@ export default defineComponent({
                 .catch(err => {
                     console.log(err);
                 })
-        }
+        },
+
+        add_name_list() {
+            this.v$.name_list.$touch()
+            if (!this.v$.name_list.$error) {
+                axios.post('/api/list_desks', {name: this.name_list, desk_id: this.id})
+                    .then(res => {
+                        this.getDeskLists();
+                        this.name_list = null;
+
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        },
+
+        delete_list_desk(id){
+            axios.delete(`/api/list_desks/${id}`)
+                .then(res => {
+                    this.getDeskLists();
+                }).catch( err => {
+                console.log(err);
+            })
+        },
 
     },
 

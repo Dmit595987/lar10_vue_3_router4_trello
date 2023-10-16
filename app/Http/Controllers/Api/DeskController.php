@@ -7,7 +7,8 @@ use App\Http\Requests\Api\DeskStoreRequest;
 use App\Http\Requests\Api\DeskUpdateRequest;
 use App\Http\Resources\DeskResource;
 use App\Models\Desk;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 
 class DeskController extends Controller
 {
@@ -55,6 +56,6 @@ class DeskController extends Controller
     public function delete(Desk $desk)
     {
         $desk->delete();
-        return response([], 200);
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
