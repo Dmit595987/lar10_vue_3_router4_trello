@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Card;
 use App\Models\Desk;
 use App\Models\ListDesk;
 use Illuminate\Database\Seeder;
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 //       Desk::factory(100)->create();
-        ListDesk::factory(100)->create();
+//        ListDesk::factory(100)->create();
+        Card::factory(40)->create();
     }
 }

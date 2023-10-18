@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListDeskStoreRequest extends FormRequest
+class CardStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +23,15 @@ class ListDeskStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'desk_id' => 'required|integer|exists:desks,id'
+            'list_desk_id' => 'required|integer|exists:list_desks,id'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Это поле обязательное'
+            'name.required' => 'Это поле обязательное',
+            'name.max' => 'Max 100 symbol'
         ];
     }
 }

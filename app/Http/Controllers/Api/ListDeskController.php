@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ListDeskStoreRequest;
+use App\Http\Requests\Api\ListDeskUpdateRequest;
 use App\Http\Resources\ListDeskResource;
 use App\Models\ListDesk;
 
@@ -34,8 +35,8 @@ class ListDeskController extends Controller
     public function store(ListDeskStoreRequest $request)
     {
         $data = $request->validated();
-        ListDesk::create($data);
-        return response([], 200);
+        $list_desk = ListDesk::create($data);
+        return new ListDeskResource($list_desk);
     }
 
     /**
@@ -49,9 +50,11 @@ class ListDeskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ListDeskUpdateRequest $request, ListDesk $list_Desk)
     {
-        //
+        $data = $request->validated();
+        $list_Desk->update($data);
+        return new ListDeskResource($list_Desk);
     }
 
     /**

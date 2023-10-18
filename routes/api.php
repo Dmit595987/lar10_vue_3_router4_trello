@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CardController;
 use App\Http\Controllers\Api\DeskController;
 use App\Http\Controllers\Api\ListDeskController;
 use Illuminate\Http\Request;
@@ -28,4 +29,10 @@ Route::delete('/desks/{desk}', [DeskController::class, 'delete']);
 
 Route::get('/list_desks', [ListDeskController::class, 'index']);
 Route::post('/list_desks', [ListDeskController::class, 'store']);
+Route::patch('/list_desks/{list_Desk}', [ListDeskController::class, 'update']);
 Route::delete('/list_desks/{list_Desk}', [ListDeskController::class, 'delete']);
+
+Route::get('/cards/{card}', [CardController::class, 'show']);
+Route::post('/cards', [CardController::class, 'store']);
+Route::patch('/cards/{card}', [CardController::class, 'update']);
+Route::delete('/cards/{card}', [CardController::class, 'delete']);

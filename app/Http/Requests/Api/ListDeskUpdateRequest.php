@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListDeskStoreRequest extends FormRequest
+class ListDeskUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,6 @@ class ListDeskStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'desk_id' => 'required|integer|exists:desks,id'
         ];
     }
 
