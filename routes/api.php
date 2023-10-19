@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CardController;
 use App\Http\Controllers\Api\DeskController;
 use App\Http\Controllers\Api\ListDeskController;
+use App\Http\Controllers\Api\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,3 +37,5 @@ Route::get('/cards/{card}', [CardController::class, 'show']);
 Route::post('/cards', [CardController::class, 'store']);
 Route::patch('/cards/{card}', [CardController::class, 'update']);
 Route::delete('/cards/{card}', [CardController::class, 'delete']);
+
+Route::post('/tasks', [TaskController::class, 'store']);

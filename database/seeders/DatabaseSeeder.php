@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\Card;
 use App\Models\Desk;
 use App\Models\ListDesk;
+use App\Models\Task;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 //       Desk::factory(100)->create();
 //        ListDesk::factory(100)->create();
-        Card::factory(40)->create();
+//        Card::factory(40)->create();
+        Task::factory(300)->create();
     }
 }

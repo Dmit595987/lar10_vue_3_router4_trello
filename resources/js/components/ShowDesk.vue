@@ -52,63 +52,117 @@
 
                     <td>{{ list_desk.desk_id }}</td>
                     <td>
-                        <a href="#" @click.prevent="change_name_button(list_desk.id)" class="btn btn-outline-secondary">{{button_name}}</a>
+                        <a href="#" @click.prevent="change_name_button(list_desk.id)" class="btn btn-outline-secondary">{{
+                                button_name
+                            }}</a>
                     </td>
                     <td><a href="#" @click.prevent="delete_list_desk(list_desk.id)" class="btn btn-outline-danger">Delete</a>
                     </td>
                     <td>
-                    <div class="container text-center" v-for="card in list_desk.cards">
-                        <div class="row" >
+                        <div class="container text-center" v-for="card in list_desk.cards">
+                            <div class="row">
 
-                            <div class="col bg-white">
-                                <h5 class="card-title mb-3">{{ card.name }}</h5>
-                                <button  @click.prevent="getCard(card.id)" type="button" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    Open CARD
-                                </button>
-                                <a href="#" @click.prevent="deleteCard(card.id)" class="btn btn-outline-warning mb-2 mt-2">Delete CARD</a>
-                            </div>
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ current_cards.name }}</h1>
+                                <div class="col bg-white">
+                                    <h5 class="card-title mb-3">{{ card.name }}</h5>
+                                    <button @click.prevent="getCard(card.id)" type="button" class="btn btn-primary me-2"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Open CARD
+                                    </button>
+                                    <a href="#" @click.prevent="deleteCard(card.id)"
+                                       class="btn btn-outline-warning mb-2 mt-2 me-2">Delete CARD</a>
+                                </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                    Change: {{ current_cards.name }}</h1>
 
 
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
 
-                                        </div>
+                                            </div>
 
-                                        <div class="modal-body">
-                                            <form >
-                                                <input type="text" v-model="current_cards.name" v-if="show_form_edit_card_name" class="mt-3 form-control mb-3">
-                                                    <p>{{this.show_form_edit_card_name}}</p>
-                                                <div class="alert alert-danger mt-3" role="alert" v-if="errors">
-                                                    {{ errors[0] }}!
+                                            <div class="modal-body">
+                                                <form>
+                                                    <input type="text" v-model="current_cards.name"
+                                                           v-if="show_form_edit_card_name"
+                                                           class="mt-3 form-control mb-3">
+                                                    <div class="alert alert-danger mt-3" role="alert" v-if="errors">
+                                                        {{ errors[0] }}!
+                                                    </div>
+                                                    <input type="submit" class="btn btn-outline-primary"
+                                                           v-if="show_form_edit_card_name" value="Save name card"
+                                                           @click.prevent="edit_name_card(current_cards.id)">
+                                                    <input type="submit" class="btn btn-outline-warning"
+                                                           v-if="!show_form_edit_card_name" value="Edit name card"
+                                                           @click.prevent="show_form_edit_card_name = true">
+
+                                                </form>
+                                                <div class="form-check form-switch form-check-reverse" v-for="task in current_cards.tasks">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse">
+                                                    <label class="form-check-label" for="flexSwitchCheckReverse">{{task.name}}</label>
+
                                                 </div>
-                                                <input type="submit" class="btn btn-outline-primary" :value="value_button_modal" @click.prevent="edit_name_card(current_cards.id)">
+                                                <form>
+                                                    <input type="text" class="form-control">
+                                                    <input type="submit" value="Add Task" class="btn btn-outline-success mt-3">
+                                                </form>
+                                            </div>
 
-                                            </form>
-                                            ...
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
-                    </div>
-                        <form @submit.prevent="add_new_card(list_desk.id)">
-                            <input type="text" v-model="card_names[list_desk.id]" class="mt-3 form-control mb-3"  placeholder="input card">
-                            <div class="alert alert-danger mt-3" role="alert" v-if="errors">
-                                {{ errors[0] }}!
-                            </div>
-                            <input type="submit" class="btn btn-outline-primary" value="Add CARD">
+                        <!-- Button modal ADD NEW CARD -->
+                        <button type="button" class="btn btn-outline-success m-4" @click="errors = null"
+                                data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            Add New CARD
+                        </button>
 
-                        </form>
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Input New Card</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form @submit.prevent="add_new_card(list_desk.id)">
+                                            <input type="text" v-model="card_names[list_desk.id]"
+                                                   class="mt-3 form-control mb-3"
+                                                   placeholder="input card">
+                                            <div class="alert alert-danger mt-3" role="alert" v-if="errors">
+                                                {{ errors[0] }}!
+                                            </div>
+                                            <input type="submit" class="btn btn-outline-primary" value="Add CARD">
+
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </td>
                 </tr>
@@ -202,32 +256,28 @@ export default defineComponent({
 
     methods: {
 
-        edit_name_card(id){
-            this.show_form_edit_card_name = true;
-            if(this.show_form_edit_card_name){
-                this.value_button_modal = 'Save name Card'
-                axios.patch(`/api/cards/${id}`, {name: this.current_cards.name})
-                    .then(res => {
-                        this.getDeskLists();
-
-                    }).catch(err => {
-                    console.log(err);
-                })
-            }else{
-                this.value_button_modal = 'Edit name CARD'
-            }
-
+        edit_name_card(id) {
+            axios.patch(`/api/cards/${id}`, {name: this.current_cards.name})
+                .then(res => {
+                    this.getDeskLists();
+                    this.show_form_edit_card_name = false;
+                    this.errors = null
+                }).catch(err => {
+                this.errors = []
+                this.errors.push(err.response.data.errors.name[0])
+            })
         },
 
-        getCard(cart_id){
-          axios.get(`/api/cards/${cart_id}`)
-              .then( res => {
-                  this.current_cards = res.data.data
-                  console.log(this.current_cards)
-              })
-              .catch(err => {
-                  console.log(err);
-              })
+        getCard(cart_id) {
+            this.errors = null
+            axios.get(`/api/cards/${cart_id}`)
+                .then(res => {
+                    this.current_cards = res.data.data
+                    console.log(this.current_cards)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         },
 
         getDesk() {
@@ -243,23 +293,26 @@ export default defineComponent({
                 })
         },
 
-        deleteCard(id){
-            axios.delete(`/api/cards/${id}`)
-                .then(res => {
-                    this.getDeskLists();
-                }).catch(err => {
+        deleteCard(id) {
+            if (confirm('Вы действительно хотите удалить?')) {
+                axios.delete(`/api/cards/${id}`)
+                    .then(res => {
+                        this.getDeskLists();
+                    }).catch(err => {
                     console.log(err)
-            })
+                })
+            }
         },
 
-        add_new_card(list_desk_id){
+        add_new_card(list_desk_id) {
             console.log(this.card_names)
-            axios.post('/api/cards', {name: this.card_names[list_desk_id], list_desk_id: list_desk_id })
+            axios.post('/api/cards', {name: this.card_names[list_desk_id], list_desk_id: list_desk_id})
                 .then(res => {
                     this.getDeskLists()
                     this.card_names[list_desk_id] = ''
+                    this.errors = null
                 })
-                .catch(err =>{
+                .catch(err => {
                     console.log(err);
                     this.errors = []
                     this.errors.push(err.response.data.errors.name[0])
