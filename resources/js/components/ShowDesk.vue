@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <h1>Edit Desk</h1>
+
         <div class="d-flex justify-content-center" v-if="loading">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -32,7 +33,8 @@
                     <th scope="col">CARD</th>
                 </tr>
                 </thead>
-                <tbody v-for="list_desk in list_desks">
+                <tbody v-for="list_desk in list_desks" :key="list_desk.id">
+                        {{ list_desk.id }}
                 <tr>
 
 
@@ -50,7 +52,7 @@
                     </td>
                     <td v-else>{{ list_desk.name }}</td>
 
-                    <td>{{ list_desk.desk_id }}</td>
+                    <td>{{ list_desk.id }}</td>
                     <td>
                         <a href="#" @click.prevent="change_name_button(list_desk.id)" class="btn btn-outline-secondary">{{
                                 button_name
@@ -97,18 +99,41 @@
                                                     <input type="submit" class="btn btn-outline-primary"
                                                            v-if="show_form_edit_card_name" value="Save name card"
                                                            @click.prevent="edit_name_card(current_cards.id)">
-                                                    <input type="submit" class="btn btn-outline-warning"
+                                                    <input type="submit" class="btn btn-outline-warning mb-3"
                                                            v-if="!show_form_edit_card_name" value="Edit name card"
                                                            @click.prevent="show_form_edit_card_name = true">
 
                                                 </form>
                                                 <div class="form-check form-switch form-check-reverse" v-for="task in current_cards.tasks">
                                                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse">
-                                                    <label class="form-check-label" for="flexSwitchCheckReverse">{{task.name}}</label>
 
+                                                    <form action="#" v-if="show_task_name === task.id">
+                                                        <input @blur="edit_task_name(task.id, task.name)" type="text" v-model="task.name" class="form-control">
+                                                    </form>
+                                                    <label v-else class="form-check-label" for="flexSwitchCheckReverse">{{task.name}}</label>
+                                                    <a href="#" v-if="show_task_name !== task.id" @click.prevent="show_task_name_true_or_false(task.id)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-ballpen-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M17.828 2a3 3 0 0 1 1.977 .743l.145 .136l1.171 1.17a3 3 0 0 1 .136 4.1l-.136 .144l-1.706 1.707l2.292 2.293a1 1 0 0 1 .083 1.32l-.083 .094l-4 4a1 1 0 0 1 -1.497 -1.32l.083 -.094l3.292 -3.293l-1.586 -1.585l-7.464 7.464a3.828 3.828 0 0 1 -2.474 1.114l-.233 .008c-.674 0 -1.33 -.178 -1.905 -.508l-1.216 1.214a1 1 0 0 1 -1.497 -1.32l.083 -.094l1.214 -1.216a3.828 3.828 0 0 1 .454 -4.442l.16 -.17l10.586 -10.586a3 3 0 0 1 1.923 -.873l.198 -.006zm0 2a1 1 0 0 0 -.608 .206l-.099 .087l-1.707 1.707l2.586 2.585l1.707 -1.706a1 1 0 0 0 .284 -.576l.01 -.131a1 1 0 0 0 -.207 -.609l-.087 -.099l-1.171 -1.171a1 1 0 0 0 -.708 -.293z" stroke-width="0" fill="currentColor"></path>
+                                                    </svg>
+                                                    </a>
+
+                                                    <a href="#" v-if="show_task_name !== task.id">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16zm-9.489 5.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" stroke-width="0" fill="currentColor"></path>
+                                                        <path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" stroke-width="0" fill="currentColor"></path>
+                                                    </svg>
+                                                    </a>
                                                 </div>
-                                                <form>
-                                                    <input type="text" class="form-control">
+
+                                                <form @submit.prevent="addTask(current_cards.id)">
+                                                    <input type="text" v-model="task_name" @keyup="v$.task_name.$touch()" placeholder="input name task" class="form-control" :class="{ 'is-invalid' : v$.task_name.$error }">
+                                                    <div>
+                                                        <p v-for="error of v$.$errors" :key="error.$uid">
+                                                            {{ error.$message }}
+                                                        </p>
+                                                    </div>
                                                     <input type="submit" value="Add Task" class="btn btn-outline-success mt-3">
                                                 </form>
                                             </div>
@@ -128,7 +153,7 @@
                         </div>
 
                         <!-- Button modal ADD NEW CARD -->
-                        <button type="button" class="btn btn-outline-success m-4" @click="errors = null"
+                        <button type="button" class="btn btn-outline-success m-4" @click.prevent="list_desk_id=list_desk.id"
                                 data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             Add New CARD
                         </button>
@@ -144,8 +169,10 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form @submit.prevent="add_new_card(list_desk.id)">
-                                            <input type="text" v-model="card_names[list_desk.id]"
+                                        <p>{{ this.list_desk_id }}</p>
+                                        <p>{{ card_names[list_desk.id] }}</p>
+                                        <form @submit.prevent="add_new_card(this.list_desk_id)">
+                                            <input type="text" v-model="card_names[this.list_desk_id]"
                                                    class="mt-3 form-control mb-3"
                                                    placeholder="input card">
                                             <div class="alert alert-danger mt-3" role="alert" v-if="errors">
@@ -196,7 +223,7 @@ import {defineComponent} from 'vue'
 import axios from "axios";
 import {useVuelidate} from '@vuelidate/core'
 import {required, minLength, maxLength, helpers} from '@vuelidate/validators'
-import button from "bootstrap/js/src/button.js";
+
 
 
 export default defineComponent({
@@ -222,6 +249,10 @@ export default defineComponent({
             current_cards: [],
             value_button_modal: 'Edit name CARD',
             show_form_edit_card_name: false,
+            task_name: null,
+
+            list_desk_id: null,
+            show_task_name: null
 
         }
     },
@@ -240,10 +271,16 @@ export default defineComponent({
                 maxLength: helpers.withMessage('Максимум 25 символов!', maxLength(25))
             },
             name_list: {
-                // required: helpers.withMessage('Обязательное поле!', required),
+                required: helpers.withMessage('Обязательное поле!', required),
                 minLength: helpers.withMessage('Минимум 10 символов!', minLength(10)),
                 maxLength: helpers.withMessage('Максимум 25 символов!', maxLength(25))
             },
+            task_name: {
+                required: helpers.withMessage('Обязательное поле!', required),
+                minLength: helpers.withMessage('Минимум 10 символов!', minLength(10)),
+                maxLength: helpers.withMessage('Максимум 70 символов!', maxLength(70))
+            },
+
 
         }
     },
@@ -255,6 +292,15 @@ export default defineComponent({
     },
 
     methods: {
+
+        show_task_name_true_or_false(task_id){
+            this.show_task_name = task_id;
+        },
+
+        edit_task_name(task_id, task_name){
+            this.show_task_name = false;
+            console.log(task_name, task_id)
+        },
 
         edit_name_card(id) {
             axios.patch(`/api/cards/${id}`, {name: this.current_cards.name})
@@ -305,17 +351,22 @@ export default defineComponent({
         },
 
         add_new_card(list_desk_id) {
+            console.log(list_desk_id)
             console.log(this.card_names)
             axios.post('/api/cards', {name: this.card_names[list_desk_id], list_desk_id: list_desk_id})
                 .then(res => {
                     this.getDeskLists()
                     this.card_names[list_desk_id] = ''
+                    Object.keys(this.card_names).forEach(list_desk_id => delete this.card_names[list_desk_id]);
                     this.errors = null
+                    console.log(this.card_names)
+                    this.list_desk_id = null
                 })
                 .catch(err => {
                     console.log(err);
                     this.errors = []
                     this.errors.push(err.response.data.errors.name[0])
+                    this.list_desk_id = null
                 })
 
 
@@ -327,6 +378,7 @@ export default defineComponent({
                 axios.patch('/api/desks/' + this.id, {name: this.name, _method: 'PUT'})
                     .then(res => {
                         this.errored = false
+                        this.v$.name.$reset()
                     })
                     .catch(err => {
                         this.errored = true
@@ -350,7 +402,7 @@ export default defineComponent({
             axios.get(`/api/list_desks`, {params: {desk_id: this.id}})
                 .then(res => {
                     this.list_desks = res.data.data
-
+                    console.log(this.list_desks)
                 })
                 .catch(err => {
                     console.log(err);
@@ -365,6 +417,7 @@ export default defineComponent({
                     .then(res => {
                         this.getDeskLists();
                         this.name_list = null;
+                        this.v$.name_list.$reset();
 
                     })
                     .catch(err => {
@@ -392,6 +445,7 @@ export default defineComponent({
 
                         this.change_name_button(null)
                         this.getDeskLists();
+                        this.v$.name_list.$reset()
                     }).catch(err => {
                     console.log(err);
                     this.errors = []
@@ -407,7 +461,21 @@ export default defineComponent({
             } else {
                 this.button_name = 'Edit';
             }
-        }
+        },
+
+        addTask(id){
+            this.v$.task_name.$touch()
+            if(!this.v$.task_name.$error){
+                axios.post('/api/tasks', {name: this.task_name, card_id: id})
+                    .then(res => {
+                        this.getCard(id);
+                        this.task_name = null;
+                        this.v$.task_name.$reset();
+                    }).catch(err => {
+                    console.log(err);
+                })
+            }
+        },
 
     },
 
