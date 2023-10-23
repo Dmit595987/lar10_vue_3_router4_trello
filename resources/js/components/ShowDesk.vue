@@ -39,9 +39,10 @@
 
 
                     <td v-if="desk_list_input_id === list_desk.id">
+
                         <form action="#">
                             <input type="text" @blur="update_list_desk(list_desk.id, list_desk.name)"
-                                   v-model="list_desk.name" class="form-control" @keyup="v$.name_list.$touch()">
+                                   v-model="list_desk.name" class="form-control">
                         </form>
                         <div>
                             <div class="alert alert-danger mt-3" role="alert" v-if="errors">
@@ -202,9 +203,9 @@
         </div>
         <h1>ADD LIST DESK</h1>
         <div class="form-control">
-            <input type="text" @keyup="v$.name_list.$touch()" v-model="name_list" placeholder="add List"
+            <input type="text" @keyup="v$.name_list_new.$touch()" v-model="name_list_new" placeholder="add List"
                    class="form-control"
-                   :class="{ 'is-invalid' : v$.name_list.$error }">
+                   :class="{ 'is-invalid' : v$.name_list_new.$error }">
             <div>
                 <p v-for="error of v$.$errors" :key="error.$uid">
                     {{ error.$message }}
@@ -244,6 +245,7 @@ export default defineComponent({
             errored: false,
             list_desks: null,
             name_list: null,
+            name_list_new: null,
             desk_list_input_id: null,
             button_name: "Edit",
             errors: null,
@@ -273,6 +275,11 @@ export default defineComponent({
                 maxLength: helpers.withMessage('Максимум 25 символов!', maxLength(25))
             },
             name_list: {
+                required: helpers.withMessage('Обязательное поле!', required),
+                minLength: helpers.withMessage('Минимум 10 символов!', minLength(10)),
+                maxLength: helpers.withMessage('Максимум 25 символов!', maxLength(25))
+            },
+            name_list_new: {
                 required: helpers.withMessage('Обязательное поле!', required),
                 minLength: helpers.withMessage('Минимум 10 символов!', minLength(10)),
                 maxLength: helpers.withMessage('Максимум 25 символов!', maxLength(25))
@@ -432,13 +439,13 @@ export default defineComponent({
 
 
         add_name_list() {
-            this.v$.name_list.$touch()
-            if (!this.v$.name_list.$error) {
-                axios.post('/api/list_desks', {name: this.name_list, desk_id: this.id})
+            this.v$.name_list_new.$touch()
+            if (!this.v$.name_list_new.$error) {
+                axios.post('/api/list_desks', {name: this.name_list_new, desk_id: this.id})
                     .then(res => {
                         this.getDeskLists();
-                        this.name_list = null;
-                        this.v$.name_list.$reset();
+                        this.name_list_new = null;
+                        this.v$.name_list_new.$reset();
 
                     })
                     .catch(err => {
@@ -458,8 +465,6 @@ export default defineComponent({
         },
 
         update_list_desk(id, name) {
-            this.v$.name_list.$touch()
-            if (!this.v$.name_list.$error) {
                 console.log(name)
                 axios.patch(`/api/list_desks/${id}`, {name: name})
                     .then(res => {
@@ -472,7 +477,7 @@ export default defineComponent({
                     this.errors = []
                     this.errors.push(err.response.data.errors.name[0])
                 })
-            }
+
         },
 
         change_name_button(id) {
