@@ -39,3 +39,5 @@ Route::patch('/cards/{card}', [CardController::class, 'update']);
 Route::delete('/cards/{card}', [CardController::class, 'delete']);
 
 Route::post('/tasks', [TaskController::class, 'store']);
+Route::patch('/tasks/{task}', [TaskController::class, 'update']);
+Route::delete('/tasks/{task}', [TaskController::class, 'delete']);

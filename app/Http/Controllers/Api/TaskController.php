@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\TaskStoreRequest;
+use App\Http\Requests\Api\TaskUpdateRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Response;
@@ -41,19 +42,19 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CardUpdateRequest $request, Card $card)
+    public function update(TaskUpdateRequest $request, Task $task)
     {
         $data = $request->validated();
-        $card->update($data);
-        return new CardResource($card);
+        $task->update($data);
+        return new TaskResource($task);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(Card $card)
+    public function delete(Task $task)
     {
-        $card->delete();
+        $task->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }
